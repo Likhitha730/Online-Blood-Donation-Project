@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeDrop - Blood Donation Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e63946;
+            --secondary: #457b9d;
+            --light: #f1faee;
+            --dark: #1d3557;
+            --gray: #a8dadc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, rgba(230,57,70,0.1) 0%, rgba(241,250,238,0.7) 100%), 
+                        url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #eee;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 0 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: transparent;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: white;
+            color: var(--primary);
+        }
+        
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            font-size: 18px;
+        }
+        
+        .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 350px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .card-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .footer-section p, 
+        .footer-section a {
+            color: #ccc;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            color: #aaa;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .section-title h2 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-tint"></i>
+                    <span>LifeDrop</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#register">Register</a></li>
+                    <li><a href="#find">Find Donors</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Donate Blood, Save Lives</h1>
+                <p>Join our community of heroes and help those in need of blood transfusions. Your donation can make all the difference.</p>
+                <div>
+                    <a href="#register" class="btn btn-primary">Register as Donor</a>
+                    <a href="#find" class="btn btn-secondary">Find Donors</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Donate Blood?</h2>
+                <p>Your single donation can save up to three lives</p>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Save Lives</h3>
+                    <p>Blood donations are essential for surgeries, cancer treatment, chronic illnesses, and traumatic injuries.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Health Benefits</h3>
+                    <p>Donating blood can help reduce harmful iron stores, stimulate blood cell production, and lower risk of heart disease.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Impact</h3>
+                    <p>Join a network of donors making a direct impact in your local community when emergencies arise.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="register" class="section" style="background-color: #f1f5f9;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Register as a Donor</h2>
+                <p>Join our network of life-savers today</p>
+            </div>
+            <div class="form-container">
+                <form id="donorForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Ravi Kumar" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" placeholder="Enter your city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="9876543210" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bloodGroup">Blood Group</label>
+                        <select id="bloodGroup" required>
+                            <option value="">Select Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Register Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="find" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Find Blood Donors</h2>
+                <p>Search for available donors in your area</p>
+            </div>
+            <div class="form-container">
+                <form id="searchForm">
+                    <div class="form-group">
+                        <label for="searchCity">City</label>
+                        <input type="text" id="searchCity" placeholder="Enter city to search" required>
+<label for="searchAge">Age</label>
+                        <input type="text" id="searchAge" placeholder="Enter Your Age Requirement" required>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="searchBloodGroup">Blood Group</label>
+                        <select id="searchBloodGroup" required>
+                            <option value="">Select Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Search Donors</button>
+                </form>
+            </div>
+            <div id="donorResults" style="margin-top: 40px; display: none;">
+                <h3 style="text-align: center; margin-bottom: 20px;">Available Donors</h3>
+                <div class="card-container" id="donorList">
+                    <!-- Donors will be populated here via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About LifeDrop</h3>
+                    <p>Connecting blood donors with recipients since 2015. Our mission is to make blood available to everyone, everywhere.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#">Home</a>
+                    <a href="#register">Register</a>
+                    <a href="#find">Find Donors</a>
+                    <a href="#about">About Us</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Health Street, Medical City</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                    <p><i class="fas fa-envelope"></i> contact@lifedrop.org</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 LifeDrop Blood Donation Portal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample donor data
+        const donors = [
+            { name: "Ravi Kumar", city: "Hyderabad", phone: "9876543210", bloodGroup: "O+", lastDonation: "3 months ago" },
+            { name: "Priya Sharma", city: "Bangalore", phone: "8765432109", bloodGroup: "A+", lastDonation: "1 month ago" },
+            { name: "Amit Patel", city: "Mumbai", phone: "7654321098", bloodGroup: "B+", lastDonation: "2 months ago" },
+            { name: "Neha Gupta", city: "Delhi", phone: "6543210987", bloodGroup: "AB+", lastDonation: "4 months ago" },
+            { name: "Sanjay Singh", city: "Chennai", phone: "5432109876", bloodGroup: "O-", lastDonation: "6 months ago" },
+            { name: "Anjali Reddy", city: "Hyderabad", phone: "4321098765", bloodGroup: "A-", lastDonation: "5 months ago" }
+        ];
+
+        // Form submission for donor registration
+        document.getElementById('donorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Add new donor to the array
+            const newDonor = {
+                name: document.getElementById('name').value,
+                city: document.getElementById('city').value,
+                phone: document.getElementById('phone').value,
+                bloodGroup: document.getElementById('bloodGroup').value,
+                lastDonation: "Just registered"
+            };
+            
+            donors.push(newDonor);
+            alert('Thank you for registering as a donor! We will contact you soon.');
+            this.reset();
+        });
+
+        // Form submission for donor search (case-insensitive)
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const city = document.getElementById('searchCity').value.toLowerCase();
+            const bloodGroup = document.getElementById('searchBloodGroup').value;
+            
+const results = donors.filter(donor => 
+                (city === '' || donor.city.toLowerCase().includes(city)) && 
+                (bloodGroup === '' || donor.bloodGroup === bloodGroup)&&
+(age === '' || donor.age == age)
+
+                       );
+
+            );
+            
+            displayDonors(results);
+        });
+
+        // Display donor results
+        function displayDonors(results) {
+            const donorList = document.getElementById('donorList');
+            const donorResults = document.getElementById('donorResults');
+            
+            donorList.innerHTML = '';
+            
+            if (results.length === 0) {
+                donorList.innerHTML = '<p style="text-align: center; width: 100%;">No donors found matching your criteria.</p>';
+            } else {
+                results.forEach(donor => {
+                    const donorCard = document.createElement('div');
+                    donorCard.className = 'card';
+                    donorCard.innerHTML = `
+                        <h3>${donor.name}</h3>
+                        <p><strong>City:</strong> ${donor.city}</p>
+                        <p><strong>Blood Group:</strong> ${donor.bloodGroup}</p>
+                        <p><strong>Phone:</strong> ${donor.phone}</p>
+                        <p><strong>Last Donation:</strong> ${donor.lastDonation}</p>
+                        <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" 
+                                onclick="alert('Contacting ${donor.name} at ${donor.phone}')">
+                            Contact Donor
+                        </button>
+                    `;
+                    donorList.appendChild(donorCard);
+                });
+            }
+            
+            donorResults.style.display = 'block';
+            
+            // Scroll to results
+            donorResults.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
